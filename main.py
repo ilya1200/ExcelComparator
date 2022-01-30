@@ -1,16 +1,25 @@
-# This is a sample Python script.
+from typing import List
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from openpyxl import Workbook
+from openpyxl.worksheet.worksheet import Worksheet
+from pandas import DataFrame
 
+from Comparator import Comparator
+from ExcelHandler import ExcelHandler
+import pandas as pd
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    PATH_TO_EXCEL: str = "assignment.xlsx"
+    excelHandler: ExcelHandler = ExcelHandler()
+    comparator: Comparator = Comparator()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    workbook: Workbook = excelHandler.read_workbook(PATH_TO_EXCEL)
+    worksheets: List[Worksheet] = workbook.worksheets
+    legacy_sheet: Worksheet = worksheets[0]
+    scalable_sheet: Worksheet = worksheets[1]
+    mapping_sheet: Worksheet = worksheets[2]
+
+    legacy: DataFrame = pd.read_excel(PATH_TO_EXCEL, legacy_sheet.title)
+    scalable: DataFrame = pd.read_excel(PATH_TO_EXCEL, scalable_sheet.title)
+    mapping: DataFrame = pd.read_excel(PATH_TO_EXCEL, mapping_sheet.title)
+    print()
